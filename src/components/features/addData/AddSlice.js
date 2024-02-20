@@ -4,9 +4,9 @@ import axios from "axios";
 export const fetchData = createAsyncThunk("data/fetchData", async ({ obj }, { rejectWithValue }) => {
   try {
     if (obj !== "") {
-      await axios.post(`https://65b7b16a46324d531d55415b.mockapi.io/bank/imdBank`, obj);
+      await axios.post(`https://65ca811f3b05d29307e06041.mockapi.io/bank/bank`, obj);
     }
-    const response = await axios.get(`https://65b7b16a46324d531d55415b.mockapi.io/bank/imdBank`);
+    const response = await axios.get(`https://65ca811f3b05d29307e06041.mockapi.io/bank/bank`);
     return response.data;
   } catch (error) {
     // Handle errors using rejectWithValue

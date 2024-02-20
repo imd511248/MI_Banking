@@ -19,9 +19,79 @@ const SignupPage = () => {
   const [balance, setBalance] = useState();
   const [istrue, setIstrue] = useState(true);
   const [activeTab, setActiveTab] = useState([true, false, false, false, false, false, false]);
-  const [userDetails, setUserDetails] = useState({ name: "", number: "", email: "", status: "", gender: "", password1: "", password2: "", img: "", upi: "", balance: "" });
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    number: "",
+    email: "",
+    status: "",
+    gender: "",
+    password1: "",
+    password2: "",
+    img: "",
+    upi: "",
+    balance: "",
+    ifsc: "MIBK0210",
+    bAccount: "",
+    acountType: "saving account",
+    branchLocation: "noida",
+    branchName: "Mi_Bank",
+    cutomerId: "",
+    cardNumber: "",
+    cardBalance: "",
+    month: "",
+    year: "",
+    visa: "visa",
+    bank: "",
+    cvv: "",
+    upiNumber: "",
+  });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const classes = [
+    { red: "bg-red-600", white: "bg-white" },
+    { red: "bg-red-600", white: "bg-white" },
+    { red: "bg-red-600", white: "bg-white" },
+    { red: "bg-red-600", white: "bg-white" },
+    { red: "bg-red-600", white: "bg-white" },
+    { red: "bg-red-600", white: "bg-white" },
+  ];
+  // ...............Submit Handler and get data............................
+  useEffect(() => {
+    let acId;
+    if (balance >= 1) {
+      acId = generateId();
+    }
+    setUserDetails({
+      name: inputData.name,
+      number: inputData.number,
+      email: emailWork.email,
+      status: emailWork.status,
+      gender: gender,
+      password1: password.password1,
+      img: img,
+      upi: upi,
+      ifsc: "MIBK0210",
+      acountType: "saving account",
+      branchLocation: "noida",
+      branchName: "Mi_Bank",
+      bAccount: acId?.userAcNumber,
+      cutomerId: acId?.userId,
+      upiNumber: "",
+      cardInfo: [{ name: inputData.name, cardNumber: acId?.userCardNumber, month: acId?.month, year: acId?.century, visa: "visa", bank: "axis", cvv: acId?.cvv }],
+    });
+  }, [inputData, emailWork, gender, password, img, upi, balance]);
+  const generateId = () => {
+    const userId = Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000;
+    const cvv = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
+    const userAcNumber = Math.floor(Math.random() * (99999999999 - 10000000000 + 1)) + 10000000000;
+    const userCardNumber = Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1)) + 1000000000000000;
+    const now = new Date();
+    let currentMonth = now.getMonth() + 1;
+    let month = currentMonth > 9 ? currentMonth : `0${currentMonth}`;
+    const century = `${now.getFullYear()}`.slice(2, 4);
+    return { userAcNumber, userId, userCardNumber, month, century, cvv };
+  };
 
   const InputHandler = (e) => {
     setInputData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -111,21 +181,7 @@ const SignupPage = () => {
       navigate("/");
     }
   };
-  // ...............Submit Handler and get data............................
-  useEffect(() => {
-    setUserDetails({
-      name: inputData.name,
-      number: inputData.number,
-      email: emailWork.email,
-      status: emailWork.status,
-      gender: gender,
-      password1: password.password1,
-      password2: password.password2,
-      img: img,
-      upi: upi,
-      balance: balance,
-    });
-  }, [inputData, emailWork, gender, password, img, upi, balance]);
+
   return (
     <>
       <div className="w-screen h-screen bg-indigo-50-200 pt-32">
@@ -151,15 +207,14 @@ const SignupPage = () => {
             disabled={istrue}>
             {activeTab[5] === true ? "Submit" : " Next"}
           </button>
-
+          {/* ..........................dot button active section........................... */}
           <div>
             <ul className="flex justify-center gap-3 mt-8">
-              <li className={`${activeTab[0] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
-              <li className={`${activeTab[1] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
-              <li className={`${activeTab[2] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
-              <li className={`${activeTab[3] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
-              <li className={`${activeTab[4] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
-              <li className={`${activeTab[5] === true ? "bg-red-600" : "bg-white"} h-3 w-3 rounded-full`}></li>
+              {classes.map((item, i) => (
+                <>
+                  <li className={`${activeTab[i] === true ? item.red : item.white} h-3 w-3 rounded-full`}></li>
+                </>
+              ))}
             </ul>
             <p className="text-center text-[#6a6262] font-semibold my-3">
               Don't have an account?{" "}
